@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulačka</title>
+
+    <style>
+        button{
+            margin: 20px;
+        }
+        p{
+            display: block;
+            width: 150px;
+            height: 30px;
+            border: solid 1px black; 
+            margin: 20px;
+            text-align: center;
+        }
+
+        #vzhladKalkulacky{
+                border: solid 1px black; 
+        }
+
+    </style>
+</head>
+<body>
+    <div id="vzhladKalkulacky">
+    <h3 style="margin: 20px;">Kalkulačka</h3> 
+
+    <label style="margin: 20px;" for="prvy">prvé číslo:</label>
+    <input type="number" id="prvy">
+    <select name="operacia" id="operacia">
+        <option value="scitanie">+</option>
+        <option value="odcitanie">-</option>
+        <option value="nasobenie">*</option>
+        <option value="delenie">/</option>
+    </select>
+    <label for="druhy">druhé číslo:</label>
+    <input type="number" id="druhy">
+    
+    <label for="vysledok">=</label>
+    <output id="vysledok" for="vypocet"></output>
+   
+
+    <button onclick="vypocet()">Vypočítaj</button>
+    <button onclick="vymazaniePola()">Vymaž pamäť</button>
+</div>
+
+
+<div id="kalkulacka"></div>
+
+    <script>
+
+        let pamat = [];
+
+            if(pamat === null){
+                    pamat = [];
+                }
+
+
+        function vypocet(){
+
+            let vysledok = document.getElementById("vysledok");
+            let prvy = parseInt(document.getElementById("prvy").value);
+            let druhy = parseInt(document.getElementById("druhy").value);
+
+            switch (document.getElementById("operacia").value){
+                
+                case "scitanie":
+                    pamat.unshift(prvy + druhy);
+                    break;
+                case "odcitanie":
+                    pamat.unshift(prvy - druhy);
+                    break;
+                case "nasobenie":
+                    pamat.unshift(prvy * druhy);
+                    break;
+                case "delenie":
+                    pamat.unshift(prvy / druhy);
+                    break;
+            }
+
+            if(pamat.length > 5){
+                pamat.pop();
+            }
+
+            vysledok.innerText = JSON.stringify(pamat);
+
+            localStorage.setItem("pamat", JSON.stringify(pamat));
+            console.log(pamat)
+
+        }
+
+        function vymazaniePola(){
+            // vymazanie pola
+            pamat = [];
+
+            console.log(pamat);
+
+            //vymazanie z HTML
+            document.getElementById("vysledok").innerHTML = "";
+
+            //update localstorage (!!!)
+            localStorage.setItem("pamat", JSON.stringify(pamat));
+
+        }
+
+    </script>
+</body>
+</html>
